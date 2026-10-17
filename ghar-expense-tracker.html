@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏠 Ghar Ka Daily Expense Tracker | NSUT Devlympics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Poppins', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen pb-12">
+    <!-- Header -->
+    <header class="bg-emerald-600 text-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="text-3xl">🏠</span>
+                <div>
+                    <h1 class="text-xl font-bold">Ghar Ka Daily Expense Tracker</h1>
+                    <p class="text-xs text-emerald-100">Bridge the Gap • NSUT Devlympics WhatsApp MCP</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <span id="current-date" class="text-xs bg-emerald-700 px-3 py-1 rounded-full font-medium"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-6 space-y-6">
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Total Kharcha (All Time)</p>
+                    <h3 id="total-expense" class="text-2xl font-bold text-slate-900 mt-1">₹0</h3>
+                </div>
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-xl font-bold">💸</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Is Mahine Ka Kharcha</p>
+                    <h3 id="monthly-expense" class="text-2xl font-bold text-emerald-600 mt-1">₹0</h3>
+                </div>
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center text-xl font-bold">📊</div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                <div>
+                    <p class="text-xs text-slate-500 font-semibold uppercase">Entries Recorded</p>
+                    <h3 id="total-count" class="text-2xl font-bold text-indigo-600 mt-1">0</h3>
+                </div>
+                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-xl font-bold">📝</div>
+            </div>
+        </div>
+
+        <!-- Add Expense Form -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2">
+                <span>➕</span> Naya Kharcha Jodein
+            </h2>
+            <form id="expense-form" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Tarikh (Date)</label>
+                    <input type="date" id="expense-date" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Category</label>
+                    <select id="expense-category" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm bg-white">
+                        <option value="Groceries 🥦">Groceries (Sabzi/Rashan) 🥦</option>
+                        <option value="Bills & Utilities 💡">Bills & Utilities (Bijli/Pani) 💡</option>
+                        <option value="Milk & Bread 🥛">Milk & Bread 🥛</option>
+                        <option value="Household/Cleaning 🧹">Household & Cleaning 🧹</option>
+                        <option value="Medical 💊">Medical / Dawai 💊</option>
+                        <option value="Other 📦">Other / Miscellaneous 📦</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Amount (₹)</label>
+                    <input type="number" id="expense-amount" placeholder="e.g. 450" required min="1" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+                </div>
+                <div class="flex items-end">
+                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-6 rounded-xl transition shadow-md shadow-emerald-600/20 text-sm">
+                        Kharcha Save Karein 💾
+                    </button>
+                </div>
+            </form>
+            <div class="mt-3">
+                <input type="text" id="expense-note" placeholder="Description (e.g. 5kg Aata aur 2L doodh...)" class="w-full px-4 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
+            </div>
+        </div>
+
+        <!-- Recent Expenses List -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <span>📋</span> Recent Kharcha History
+                </h2>
+                <button onclick="clearAllData()" class="text-xs text-rose-500 hover:text-rose-700 font-medium">Sab Clear Karein 🗑️</button>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase">
+                            <th class="pb-3">Tarikh</th>
+                            <th class="pb-3">Category & Note</th>
+                            <th class="pb-3 text-right">Amount</th>
+                            <th class="pb-3 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-table-body" class="divide-y divide-slate-50 text-sm">
+                        <!-- Dynamic Rows -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="empty-state" class="text-center py-12 text-slate-400">
+                <p class="text-4xl mb-2">📭</p>
+                <p class="text-sm">Abhi tak koi kharcha add nahi kiya gaya hai.</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Set today's date on load
+        document.getElementById('expense-date').valueAsDate = new Date();
+        const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('hi-IN', options);
+
+        let expenses = JSON.parse(localStorage.getItem('nsut_ghar_expenses')) || [
+            { id: 1, date: '2025-05-10', category: 'Groceries 🥦', amount: 850, note: 'Tamatar, Pyaaz, Dal' },
+            { id: 2, date: '2025-05-11', category: 'Milk & Bread 🥛', amount: 120, note: 'Daily milk packet' },
+            { id: 3, date: '2025-05-12', category: 'Bills & Utilities 💡', amount: 1450, note: 'Wi-Fi monthly bill' }
+        ];
+
+        function saveAndRender() {
+            localStorage.setItem('nsut_ghar_expenses', JSON.stringify(expenses));
+            renderExpenses();
+        }
+
+        document.getElementById('expense-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const date = document.getElementById('expense-date').value;
+            const category = document.getElementById('expense-category').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            const note = document.getElementById('expense-note').value || category;
+
+            const newExpense = {
+                id: Date.now(),
+                date,
+                category,
+                amount,
+                note
+            };
+
+            expenses.unshift(newExpense);
+            saveAndRender();
+            
+            document.getElementById('expense-amount').value = '';
+            document.getElementById('expense-note').value = '';
+        });
+
+        function deleteExpense(id) {
+            expenses = expenses.filter(item => item.id !== id);
+            saveAndRender();
+        }
+
+        function clearAllData() {
+            if(confirm('Kya aap saare expenses delete karna chahte hain?')) {
+                expenses = [];
+                saveAndRender();
+            }
+        }
+
+        function renderExpenses() {
+            const tbody = document.getElementById('expense-table-body');
+            const emptyState = document.getElementById('empty-state');
+            tbody.innerHTML = '';
+
+            let total = 0;
+            let currentMonthTotal = 0;
+            const currentMonthStr = new Date().toISOString().slice(0, 7); // YYYY-MM
+
+            if(expenses.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                expenses.forEach(item => {
+                    total += item.amount;
+                    if(item.date && item.date.startsWith(currentMonthStr)) {
+                        currentMonthTotal += item.amount;
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'hover:bg-slate-50/80 transition';
+                    tr.innerHTML = `
+                        <td class="py-3.5 text-slate-500 font-medium text-xs">${item.date}</td>
+                        <td class="py-3.5">
+                            <span class="font-semibold text-slate-800 block">${item.category}</span>
+                            <span class="text-xs text-slate-400">${item.note}</span>
+                        </td>
+                        <td class="py-3.5 text-right font-bold text-slate-900">₹${item.amount.toLocaleString('en-IN')}</td>
+                        <td class="py-3.5 text-center">
+                            <button onclick="deleteExpense(${item.id})" class="text-rose-400 hover:text-rose-600 bg-rose-50 hover:bg-rose-100 p-1.5 rounded-lg transition text-xs">❌</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('total-expense').innerText = '₹' + total.toLocaleString('en-IN');
+            document.getElementById('monthly-expense').innerText = '₹' + currentMonthTotal.toLocaleString('en-IN');
+            document.getElementById('total-count').innerText = expenses.length;
+        }
+
+        renderExpenses();
+    </script>
+</body>
+</html>
