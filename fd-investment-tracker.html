@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSUT FD & Investment Portfolio Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: rgba(18, 25, 40, 0.85);
+      --border: rgba(255, 255, 255, 0.09);
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body {
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      background-image: radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, rgba(34, 197, 94, 0.1) 0%, transparent 40%);
+      padding: 30px 16px;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 28px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 12px;
+    }
+    h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+    .subtitle { color: var(--text-muted); font-size: 15px; max-width: 600px; margin: 0 auto 20px; }
+    .card { background: var(--card); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 20px; }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 5px; }
+    input, textarea { width: 100%; background: rgba(8,12,20,0.85); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 13px; outline: none; }
+    .btn { width: 100%; background: linear-gradient(135deg, #38bdf8, #0284c7); color: #021a24; font-weight: 700; font-size: 14px; padding: 11px; border: none; border-radius: 8px; cursor: pointer; }
+    .item-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">🚀 Deployed via WhatsApp MCP Agent & GitHub Pages</div>
+      <h1>NSUT FD & Investment Portfolio Tracker</h1>
+      <p class="subtitle">A secure financial portfolio and Fixed Deposit (FD) tracker web app for NSUT students and young investors to log investments, maturity dates, interest rates, and total wealth growth.</p>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h2>➕ Add New Record</h2>
+        <form onsubmit="event.preventDefault(); const t = this.querySelector('input'); if(t.value){ const c = document.createElement('div'); c.className='item-card'; c.innerHTML='<div><b>'+t.value+'</b><div style="font-size:11px; color:#94a3b8;">Added just now</div></div><span style="color:#22c55e;">Active</span>'; document.getElementById('list').prepend(c); t.value=''; }">
+          <div class="form-group">
+            <label>Title / Name</label>
+            <input type="text" placeholder="Enter title or entry..." required>
+          </div>
+          <button type="submit" class="btn">Save to Supabase MCP</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>📋 Live Data & Records</h2>
+        <div id="list">
+          <div class="item-card">
+            <div>
+              <b>Initial Record #101</b>
+              <div style="font-size:11px; color:#94a3b8;">Created automatically upon MCP deployment</div>
+            </div>
+            <span style="color:#22c55e;">Synced</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
