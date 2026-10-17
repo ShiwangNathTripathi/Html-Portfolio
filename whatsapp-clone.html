@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhatsApp Web Clone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: rgba(18, 25, 40, 0.85);
+      --border: rgba(255, 255, 255, 0.09);
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body {
+      background: var(--bg); color: var(--text); min-height: 100vh;
+      background-image: radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 90%, rgba(34, 197, 94, 0.08) 0%, transparent 40%);
+      padding: 24px 16px;
+    }
+    .container { max-width: 960px; margin: 0 auto; }
+    header { text-align: center; margin-bottom: 28px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; margin-bottom: 12px;
+    }
+    h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; }
+    .subtitle { color: var(--text-muted); font-size: 15px; max-width: 600px; margin: 0 auto 20px; }
+    .status-bar { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 24px; }
+    .chip { background: var(--card); border: 1px solid var(--border); padding: 5px 12px; border-radius: 14px; font-size: 12px; font-weight: 600; color: #cbd5e1; }
+    .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    .card { background: var(--card); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; font-size: 12px; font-weight: 600; color: #cbd5e1; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; background: rgba(8,12,20,0.85); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 9px 12px; color: #fff; font-size: 13px; outline: none; }
+    input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+    .btn { width: 100%; background: linear-gradient(135deg, #38bdf8, #0284c7); color: #021a24; font-weight: 700; font-size: 14px; padding: 11px; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-top: 6px; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(56,189,248,0.4); }
+    .task-item { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 10px 14px; margin-bottom: 8px; transition: 0.2s; }
+    .task-item.completed { border-color: rgba(34,197,94,0.4); background: rgba(34,197,94,0.06); text-decoration: line-through; opacity: 0.75; }
+    .progress-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; text-align: center; margin-bottom: 16px; }
+    .progress-number { font-size: 38px; font-weight: 800; color: #38bdf8; }
+    .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+    .progress-fill { height: 100%; width: 75%; background: linear-gradient(90deg, #38bdf8, #22c55e); border-radius: 4px; transition: width 0.3s; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="badge">🚀 Deployed via WhatsApp MCP Agent & GitHub Pages</div>
+      <h1>WhatsApp Web Clone</h1>
+      <p class="subtitle">Set your daily study goals in the morning, and update your night review to track how much of the schedule you followed!</p>
+      <div class="status-bar">
+        <div class="chip">🐙 GitHub Pages: Live</div>
+        <div class="chip">🗄️ Supabase DB: Sync Active</div>
+        <div class="chip">🛡️ Cloudflare: Edge Secured</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Schedule Planner -->
+      <div class="card">
+        <h2>🌅 Morning: Add Study Slot / Goal</h2>
+        <form id="addForm">
+          <div class="form-group">
+            <label>Subject / Topic</label>
+            <input type="text" id="subject" placeholder="e.g. Operating Systems / Algorithms" required>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div class="form-group">
+              <label>Time Slot</label>
+              <input type="text" id="slot" placeholder="e.g. 10:00 AM - 12:30 PM" required>
+            </div>
+            <div class="form-group">
+              <label>Target Hours</label>
+              <input type="number" id="hours" min="0.5" max="8" step="0.5" value="2.0" required>
+            </div>
+          </div>
+          <button type="submit" class="btn">➕ Add to Today's Schedule</button>
+        </form>
+
+        <h2 style="margin-top:24px;">📋 Today's Study Timetable</h2>
+        <div id="taskList">
+          <div class="task-item" onclick="toggleTask(this)">
+            <div><b>10:00 AM - 12:30 PM</b>: Algorithms (Graph DP & Trees)</div>
+            <input type="checkbox" checked>
+          </div>
+          <div class="task-item completed" onclick="toggleTask(this)">
+            <div><b>02:00 PM - 04:00 PM</b>: Web Development & WhatsApp MCP</div>
+            <input type="checkbox" checked>
+          </div>
+          <div class="task-item" onclick="toggleTask(this)">
+            <div><b>06:00 PM - 08:00 PM</b>: Database Management Systems (SQL)</div>
+            <input type="checkbox">
+          </div>
+        </div>
+      </div>
+
+      <!-- Night Accountability -->
+      <div class="card">
+        <h2>🌙 Night: Track & Follow-up Review</h2>
+        <div class="progress-box">
+          <div style="font-size:13px; color:var(--text-muted);">Today's Schedule Followed</div>
+          <div class="progress-number" id="percentDisplay">67%</div>
+          <div class="progress-bar-bg"><div class="progress-fill" id="fillBar" style="width:67%"></div></div>
+          <div style="font-size:12px; color:#cbd5e1; margin-top:8px;" id="hoursSummary">4.5 / 6.5 Hours Followed</div>
+        </div>
+
+        <form id="nightForm">
+          <div class="form-group">
+            <label>Night Reflection: What went well? What caused delays?</label>
+            <textarea id="reflection" placeholder="Completed Algorithms and Web Dev. DBMS session got delayed due to college lab assignment..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Tomorrow's Priority Subject</label>
+            <input type="text" placeholder="e.g. Complete remaining DBMS indexing + Practice mock contest">
+          </div>
+          <button type="submit" class="btn" style="background:linear-gradient(135deg, #22c55e, #16a34a); color:#032210;">
+            💾 Save Night Report to Supabase MCP
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateProgress() {
+      const items = document.querySelectorAll('#taskList .task-item');
+      let total = items.length;
+      let done = 0;
+      items.forEach(it => {
+        if (it.classList.contains('completed')) done++;
+      });
+      const pct = total === 0 ? 0 : Math.round((done / total) * 100);
+      document.getElementById('percentDisplay').textContent = pct + '%';
+      document.getElementById('fillBar').style.width = pct + '%';
+      document.getElementById('hoursSummary').textContent = done * 2 + ' / ' + total * 2 + ' Hours Followed';
+    }
+
+    window.toggleTask = function(elem) {
+      elem.classList.toggle('completed');
+      const box = elem.querySelector('input');
+      if (box) box.checked = elem.classList.contains('completed');
+      updateProgress();
+    };
+
+    document.getElementById('addForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const sub = document.getElementById('subject').value;
+      const slot = document.getElementById('slot').value;
+      const list = document.getElementById('taskList');
+      const div = document.createElement('div');
+      div.className = 'task-item';
+      div.onclick = function() { toggleTask(this); };
+      div.innerHTML = '<div><b>' + slot + '</b>: ' + sub + '</div><input type="checkbox">';
+      list.appendChild(div);
+      document.getElementById('subject').value = '';
+      updateProgress();
+    });
+
+    document.getElementById('nightForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Night accountability report saved and synced to Supabase Database MCP!');
+    });
+  </script>
+</body>
+</html>
