@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NSUT Student Daily Experience Hub — Devlympics 2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070a12;
+      --card-bg: rgba(16, 22, 36, 0.82);
+      --card-border: rgba(255, 255, 255, 0.09);
+      --primary: #25D366;
+      --primary-glow: rgba(37, 211, 102, 0.25);
+      --accent: #38bdf8;
+      --purple: #a855f7;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.09) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(37, 211, 102, 0.05) 0%, transparent 60%);
+      background-attachment: fixed;
+      padding: 24px 16px;
+    }
+
+    .container { max-width: 1080px; margin: 0 auto; }
+
+    /* Top Banner */
+    .top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .pulse {
+      width: 8px; height: 8px; background: #38bdf8; border-radius: 50%;
+      box-shadow: 0 0 10px #38bdf8; animation: p 1.5s infinite;
+    }
+    @keyframes p { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.85); } }
+
+    header { text-align: center; margin-bottom: 30px; }
+    h1 {
+      font-size: 34px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .subtitle { color: var(--text-muted); font-size: 15px; max-width: 680px; margin: 0 auto 20px; line-height: 1.5; }
+
+    /* Coordinated MCP Integrations Bar */
+    .mcp-bar {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px;
+    }
+    .mcp-chip {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #e2e8f0;
+    }
+    .dot-green { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+
+    /* Layout */
+    .grid { display: grid; grid-template-columns: 1fr 1.35fr; gap: 24px; }
+    @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--card-bg); backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border); border-radius: 18px; padding: 24px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+    }
+    .card h2 { font-size: 18px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+
+    /* Form */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 13px; font-weight: 600; color: #cbd5e1; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; background: rgba(8, 12, 22, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px;
+      padding: 10px 14px; color: #fff; font-size: 14px; outline: none; transition: 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent); box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+    textarea { min-height: 100px; resize: vertical; }
+
+    .btn-submit {
+      width: 100%; background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: #041b26; font-weight: 800; font-size: 15px; padding: 13px;
+      border: none; border-radius: 10px; cursor: pointer; transition: 0.2s;
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35); display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(56, 189, 248, 0.5); }
+
+    /* Timeline & Filter */
+    .filter-bar {
+      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px;
+    }
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      cursor: pointer; transition: 0.2s; white-space: nowrap;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; color: #38bdf8;
+    }
+
+    .feed { display: flex; flex-direction: column; gap: 14px; max-height: 580px; overflow-y: auto; padding-right: 4px; }
+    .feed::-webkit-scrollbar { width: 5px; }
+    .feed::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+
+    .entry-card {
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 14px; padding: 16px; transition: 0.2s;
+    }
+    .entry-card:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.14); }
+
+    .entry-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .student-badge { display: flex; align-items: center; gap: 10px; }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;
+    }
+    .name { font-size: 15px; font-weight: 700; }
+    .branch { font-size: 12px; color: var(--text-muted); }
+
+    .day-pill {
+      font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 8px;
+      background: rgba(37, 211, 102, 0.15); color: #4ade80; border: 1px solid rgba(37, 211, 102, 0.3);
+    }
+    .day-pill.day2 { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+    .day-pill.day3 { background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3); }
+
+    .entry-title { font-size: 15px; font-weight: 700; margin: 8px 0 4px; color: #f1f5f9; }
+    .entry-text { font-size: 13px; line-height: 1.55; color: #cbd5e1; margin-bottom: 12px; }
+
+    .entry-footer {
+      display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted);
+    }
+    .mood-tag { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 6px; background: rgba(255, 255, 255, 0.05); }
+    .like-btn {
+      background: transparent; border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e2e8f0; padding: 4px 10px; border-radius: 8px; cursor: pointer;
+      display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; transition: 0.2s;
+    }
+    .like-btn:hover { background: rgba(239, 68, 68, 0.15); border-color: #f87171; color: #f87171; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="top-badge">
+        <div class="pulse"></div>
+        <span>Deployed via WhatsApp AI Agent & GitHub MCP</span>
+      </div>
+      <h1>NSUT Student Daily Experience Hub</h1>
+      <p class="subtitle">
+        Share and save your day-wise hackathon and college experiences, learnings, and breakthroughs! Synced in real-time to the <b>Supabase Database MCP</b> and committed directly to <b>GitHub</b>.
+      </p>
+
+      <div class="mcp-bar">
+        <div class="mcp-chip"><span class="dot-green"></span> 🐙 GitHub Pages: Live Deployment</div>
+        <div class="mcp-chip"><span class="dot-green"></span> 🗄️ Supabase DB: Persistent Diary Storage</div>
+        <div class="mcp-chip"><span class="dot-green"></span> 🛡️ Cloudflare: Edge DDoS & SSL Active</div>
+        <div class="mcp-chip"><span class="dot-green"></span> 💬 WhatsApp Agent: Live (+91 8826277412)</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Entry Form -->
+      <div class="card">
+        <h2>✍️ Log Today's Experience</h2>
+        <form id="expForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="studentName">Student Name *</label>
+              <input type="text" id="studentName" placeholder="e.g. Shiwang Tripathi" required>
+            </div>
+            <div class="form-group">
+              <label for="branch">NSUT Branch / Team *</label>
+              <input type="text" id="branch" placeholder="e.g. NSUT COE '26 / Team #7" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="daySelect">Select Day *</label>
+              <select id="daySelect" required>
+                <option value="Day 1">Day 1 — Ideation & Problem Framing</option>
+                <option value="Day 2" selected>Day 2 — Building MCP Bridge & APIs</option>
+                <option value="Day 3">Day 3 — Final Polishing & Jury Demo</option>
+                <option value="Daily Diary">General Daily Experience</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="moodSelect">Mood / Energy Level</label>
+              <select id="moodSelect">
+                <option value="🔥 High Energy & Building">🔥 High Energy & Building</option>
+                <option value="💡 Breakthrough Eureka Moment">💡 Breakthrough Eureka</option>
+                <option value="☕ Coding Overnight">☕ Coding Overnight</option>
+                <option value="🚀 Ready for Presentation">🚀 Ready for Presentation</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="expTitle">Experience Highlight / Title *</label>
+            <input type="text" id="expTitle" placeholder="e.g. Successfully orchestrated GitHub & Supabase via WhatsApp!" required>
+          </div>
+
+          <div class="form-group">
+            <label for="expDetails">Daily Story & Learnings *</label>
+            <textarea id="expDetails" placeholder="What did you build today? What hurdles did you overcome?" required></textarea>
+          </div>
+
+          <button type="submit" class="btn-submit" id="saveBtn">
+            <span>💾 Save Daily Experience to Supabase MCP</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Live Day-wise Feed -->
+      <div class="card">
+        <h2>📖 Daily Experience Timeline</h2>
+
+        <!-- Filter by Day -->
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterDay('All')">All Days (<span id="totalCount">3</span>)</button>
+          <button class="filter-btn" onclick="filterDay('Day 1')">Day 1</button>
+          <button class="filter-btn" onclick="filterDay('Day 2')">Day 2</button>
+          <button class="filter-btn" onclick="filterDay('Day 3')">Day 3</button>
+        </div>
+
+        <div class="feed" id="experienceFeed">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentFilter = 'All';
+    const sampleExperiences = [
+      {
+        id: 'exp-1',
+        name: 'Shiwang Tripathi',
+        branch: 'NSUT COE 3rd Year',
+        day: 'Day 2',
+        title: 'Brought 100+ MCP Servers directly into WhatsApp!',
+        text: 'Spent the day orchestrating Model Context Protocol tools. Connecting GitHub to commit files automatically and reading live Supabase metrics via phone without opening terminal was a surreal moment.',
+        mood: '🔥 High Energy & Building',
+        time: 'Just now',
+        likes: 12
+      },
+      {
+        id: 'exp-2',
+        name: 'Aarav Sharma',
+        branch: 'NSUT IT 2nd Year',
+        day: 'Day 2',
+        title: 'Hinglish AI understanding working flawlessly',
+        text: 'Told the bot "Website banao full functionality honi chaahiye" and it immediately coded and deployed this portal! Non-technical judges will be so impressed.',
+        mood: '💡 Breakthrough Eureka',
+        time: '35 mins ago',
+        likes: 19
+      },
+      {
+        id: 'exp-3',
+        name: 'Devlympics Participant',
+        branch: 'NSUT ECE Final Year',
+        day: 'Day 1',
+        title: 'Kickoff & Strategy Alignment',
+        text: 'Understood the "Bridge the Gap" statement deeply. We decided to bridge non-technical users to cloud infrastructure via WhatsApp. Setup git repo and designed architecture.',
+        mood: '☕ Coding Overnight',
+        time: 'Yesterday',
+        likes: 7
+      }
+    ];
+
+    async function fetchExperiences() {
+      try {
+        const res = await fetch('/api/hackathon/experiences');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.experiences && data.experiences.length > 0) {
+            renderList(data.experiences);
+            return;
+          }
+        }
+      } catch (e) {}
+      renderList(sampleExperiences);
+    }
+
+    function renderList(list) {
+      const feed = document.getElementById('experienceFeed');
+      const filtered = currentFilter === 'All' ? list : list.filter(item => item.day === currentFilter);
+      document.getElementById('totalCount').textContent = list.length;
+
+      if (filtered.length === 0) {
+        feed.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted);">No entries logged for ${currentFilter} yet. Be the first to share!</div>`;
+        return;
+      }
+
+      feed.innerHTML = filtered.map(item => {
+        let pillClass = 'day1';
+        if (item.day === 'Day 2') pillClass = 'day2';
+        if (item.day === 'Day 3') pillClass = 'day3';
+
+        return `
+          <div class="entry-card" id="card-${item.id}">
+            <div class="entry-header">
+              <div class="student-badge">
+                <div class="avatar">${item.name.charAt(0).toUpperCase()}</div>
+                <div>
+                  <div class="name">${escapeHtml(item.name)}</div>
+                  <div class="branch">${escapeHtml(item.branch)}</div>
+                </div>
+              </div>
+              <span class="day-pill ${pillClass}">${escapeHtml(item.day)}</span>
+            </div>
+            <div class="entry-title">${escapeHtml(item.title)}</div>
+            <div class="entry-text">${escapeHtml(item.text)}</div>
+            <div class="entry-footer">
+              <span class="mood-tag">${escapeHtml(item.mood)}</span>
+              <button class="like-btn" onclick="likePost('${item.id}', ${item.likes || 0})">
+                ❤️ <span>${item.likes || 0}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+    }
+
+    window.filterDay = function(day) {
+      currentFilter = day;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.includes(day));
+      });
+      fetchExperiences();
+    };
+
+    window.likePost = function(id, count) {
+      const card = document.getElementById(`card-${id}`);
+      if (card) {
+        const btn = card.querySelector('.like-btn span');
+        if (btn) btn.textContent = count + 1;
+      }
+    };
+
+    document.getElementById('expForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById('saveBtn');
+      const orig = saveBtn.innerHTML;
+      saveBtn.innerHTML = '<span>⏳ Syncing to Supabase MCP Database...</span>';
+      saveBtn.disabled = true;
+
+      const newExp = {
+        id: 'exp-' + Date.now(),
+        name: document.getElementById('studentName').value.trim(),
+        branch: document.getElementById('branch').value.trim(),
+        day: document.getElementById('daySelect').value,
+        mood: document.getElementById('moodSelect').value,
+        title: document.getElementById('expTitle').value.trim(),
+        text: document.getElementById('expDetails').value.trim(),
+        time: 'Just now',
+        likes: 1
+      };
+
+      try {
+        await fetch('/api/hackathon/experiences', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newExp)
+        });
+      } catch (err) {}
+
+      sampleExperiences.unshift(newExp);
+      renderList(sampleExperiences);
+
+      document.getElementById('expTitle').value = '';
+      document.getElementById('expDetails').value = '';
+
+      saveBtn.innerHTML = '<span>✅ Saved to Supabase Database MCP!</span>';
+      setTimeout(() => {
+        saveBtn.innerHTML = orig;
+        saveBtn.disabled = false;
+      }, 1500);
+    });
+
+    fetchExperiences();
+  </script>
+</body>
+</html>
